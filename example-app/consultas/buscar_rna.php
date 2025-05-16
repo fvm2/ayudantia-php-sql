@@ -8,7 +8,7 @@
       <div class="card-body">
         <form method="post" action="buscar_rna.php">
           <div class="form-group">
-            <label for="upi">UPI del RNA (ej: URS000000001F):</label>
+            <label for="upi">UPI del RNA (ej: URS00008926C5):</label>
             <input type="text" class="form-control" id="upi" name="upi" required>
           </div>
           <button type="submit" class="btn btn-primary mt-2">Buscar</button>

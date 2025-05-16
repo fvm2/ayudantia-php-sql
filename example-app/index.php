@@ -15,7 +15,7 @@
             <a href="consultas/buscar_rna.php">Buscar RNA por URS</a> - Permite buscar una secuencia específica
           </li>
           <li class="list-group-item">
-            <a href="consultas/rna_por_database.php">RNA por base de datos</a> - Muestra RNA agrupado por base de datos experta
+            <a href="consultas/rna_por_tipo.php">RNA por tipo</a> - Muestra estadísticas de RNA agrupadas por tipo
           </li>
         </ul>
       </div>

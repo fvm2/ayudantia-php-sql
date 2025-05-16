@@ -2,18 +2,23 @@
 
 <body>
   <div class="container mt-5">
-    <h2 class="text-center mb-4">RNA por Base de Datos</h2>
+    <h2 class="text-center mb-4">RNA por Tipo</h2>
     
     <?php
     // Llama a conexión, crea el objeto PDO y obtiene la variable $db
     require("../config/conexion.php");
 
     // Se construye la consulta
-    $query = "SELECT db.id, db.display_name, db.description, COUNT(x.upi) as rna_count
-              FROM rnc_database db
-              JOIN xref x ON db.id = x.dbid
-              GROUP BY db.id, db.display_name, db.description
-              ORDER BY rna_count DESC;";
+    $query = "SELECT pc.rna_type, 
+                     COUNT(*) as cantidad, 
+                     ROUND(AVG(r.len), 2) as longitud_promedio
+              FROM rna r
+              JOIN rnc_rna_precomputed pc ON r.upi = pc.upi
+              WHERE pc.rna_type IS NOT NULL
+              GROUP BY pc.rna_type
+              HAVING COUNT(*) > 100
+              ORDER BY cantidad DESC
+              LIMIT 20;";
 
     // Se prepara y ejecuta la consulta
     $stmt = $db->prepare($query);
@@ -24,22 +29,18 @@
     <table class="table table-striped table-hover">
       <thead class="thead-dark">
         <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Cantidad de RNAs</th>
-          <th>Acción</th>
+          <th>Tipo de RNA</th>
+          <th>Cantidad</th>
+          <th>Longitud Promedio</th>
         </tr>
       </thead>
       <tbody>
         <?php
         foreach ($results as $r) {
           echo "<tr>";
-          echo "<td>$r[0]</td>";
+          echo "<td>" . ($r[0] ? $r[0] : 'No especificado') . "</td>";
           echo "<td>$r[1]</td>";
           echo "<td>$r[2]</td>";
-          echo "<td>$r[3]</td>";
-          echo "<td><a href='rna_de_database.php?dbid=$r[0]' class='btn btn-sm btn-info'>Ver RNAs</a></td>";
           echo "</tr>";
         }
         ?>
